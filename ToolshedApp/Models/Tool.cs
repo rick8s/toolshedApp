@@ -6,7 +6,7 @@ using System.Web;
 
 namespace ToolshedApp.Models
 {
-    public class Tool 
+    public class Tool : IComparable
     {
         [Required]
         public string Name { get; set; }
@@ -17,6 +17,13 @@ namespace ToolshedApp.Models
         [Key]
         public int ToolId { get; set; }
         public bool Available { get; set; }
+
+        public int CompareTo(object obj)
+        {
+            Tool other_tools = obj as Tool;
+            int answer = this.Name.CompareTo(other_tools.Name);
+            return answer;
+        }
 
     }
 }

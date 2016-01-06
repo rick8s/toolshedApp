@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace ToolshedApp.Models
 {
-    public class ToolshedUser
+    public class ToolshedUser : IComparable
     {
         [Required]
         public string FirstName { get; set; }
@@ -18,5 +21,14 @@ namespace ToolshedApp.Models
         public string Street { get; set; }
         [Key]
         public int UserId { get; set; }
+
+        public List<Tool> Tools { get; set; }
+
+        public int CompareTo(object obj)
+        {
+            ToolshedUser other_user = obj as ToolshedUser;
+            int answer = this.UserName.CompareTo(other_user.UserName);
+            return answer;
+        }
     }
 }

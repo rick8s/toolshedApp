@@ -11,6 +11,6 @@ namespace ToolshedApp.Models
         public virtual DbSet<ToolshedUser> ToolshedUsers { get; set; }
 
         public virtual DbSet<Tool> Tools { get; set; }
-       // public virtual DbSet<ToolReserve> Reserved { get; set; }
+        public virtual DbSet<ToolReserve> Reserved { get; set; }
     }
 }
