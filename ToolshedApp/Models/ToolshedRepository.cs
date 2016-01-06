@@ -120,5 +120,20 @@ namespace ToolshedApp.Models
             }
         }
 
+        public List<Tool> SearchByToolName(string search_term)
+        {
+            var query = from tool in _context.Tools select tool;
+            List<Tool> found_tools = query.Where(tool => Regex.IsMatch(tool.Name, search_term, RegexOptions.IgnoreCase)).ToList();
+            found_tools.Sort();
+            return found_tools;
+        }
+
+        public List<Tool> SearchByToolCategory(string search_term)
+        {
+            var query = from tool in _context.Tools select tool;
+            List<Tool> found_tools = query.Where(tool => tool.Category.Contains(search_term)).ToList();
+            found_tools.Sort();
+            return found_tools;
+        }
     }
 }

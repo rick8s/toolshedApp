@@ -350,8 +350,9 @@ namespace ToolshedApp.Tests.Models
             Assert.IsTrue(successful);
         }
 
+       
         [TestMethod]
-        public void ToolRepositoryEnsureBorrowedToolIsUnavailable()
+        public void ToolshedRepositoryEnsureBorrowedToolIsUnavailable()
         {
             //Arrange
 
@@ -373,6 +374,80 @@ namespace ToolshedApp.Tests.Models
             Assert.AreEqual(list_of_tools[0].ToolId, available_tools[0].ToolId);
             Assert.AreEqual(list_of_tools[1].ToolId, available_tools[1].ToolId);
             Assert.AreEqual(list_of_tools[3].ToolId, available_tools[2].ToolId);
+        }
+
+        [TestMethod]
+        public void ToolshedRepositoryEnsureICanSearchByToolName()
+        {
+            // Arrange
+
+            var all_tools = new List<Tool>
+            {
+                new Tool { Name = "Table Saw" },
+                new Tool { Name = "Cordless Drill" },
+                new Tool { Name = "Nail Gun" },
+                new Tool { Name = "Hand Saw" },
+                new Tool { Name = "Electric Drill" },
+                new Tool { Name = "Mitre Saw" },
+                new Tool { Name = "SawZall" }
+            };
+            mock_tool_set.Object.AddRange(all_tools);
+            ConnectMocksToDataStore(all_tools);
+            // Act
+            string search_term = "saw";
+            List<Tool> expected_tools = new List<Tool>
+            {
+                new Tool { Name = "Table Saw" },
+                new Tool { Name = "Hand Saw" },
+                new Tool { Name = "Mitre Saw" },
+                new Tool { Name = "SawZall" }
+            };
+            List<Tool> actual_tools = repository.SearchByToolName(search_term);
+            // Assert
+            Assert.AreEqual(expected_tools[1].Name, actual_tools[0].Name);
+            Assert.AreEqual(expected_tools[2].Name, actual_tools[1].Name);
+            Assert.AreEqual(expected_tools[3].Name, actual_tools[2].Name);
+            Assert.AreEqual(expected_tools[0].Name, actual_tools[3].Name);
+            Assert.AreEqual("Hand Saw", actual_tools[0].Name); // Just to check ourselves
+            Assert.AreEqual(4, actual_tools.Count); // Just to check ourselves
+        }
+
+        [TestMethod]
+        public void ToolshedRepositoryEnsureICanSearchByToolCategory()
+        {
+            // Arrange
+
+            var all_tools = new List<Tool>
+            {
+                new Tool { Name = "Table Saw", Category = "Power Tool", Description = "12 in. adjustable" },
+                new Tool { Name = "Cordless Drill", Category = "Power Tool", Description = "1/2 hammer drill" },
+                new Tool { Name = "Nail Gun", Category = "Pneumatic", Description = "16-gauge 2 1/2 inch nailer" },
+                new Tool { Name = "Hand Saw", Category = "Hand Tool", Description = "rough cut" },
+                new Tool { Name = "Electric Drill", Category = "Power Tool", Description = "3/8 keyless" },
+                new Tool { Name = "Mitre Saw", Category = "Power Tool", Description = "12 in. sliding compund " },
+                new Tool { Name = "SawZall", Category = "Power Tool", Description = "13Amp 0-3000 spm" }
+            };
+            mock_tool_set.Object.AddRange(all_tools);
+            ConnectMocksToDataStore(all_tools);
+            // Act
+            string search_term = "Power Tool";
+            List<Tool> expected_tools = new List<Tool>
+            {
+               new Tool { Name = "Table Saw", Category = "Power Tool", Description = "12 in. adjustable" },
+               new Tool { Name = "Cordless Drill", Category = "Power Tool", Description = "1/2 hammer drill" },
+               new Tool { Name = "Electric Drill", Category = "Power Tool", Description = "3/8 keyless" },
+               new Tool { Name = "Mitre Saw", Category = "Power Tool", Description = "12 in. sliding compund " },
+               new Tool { Name = "SawZall", Category = "Power Tool", Description = "13Amp 0-3000 spm" }
+            };
+            List<Tool> actual_tools = repository.SearchByToolCategory(search_term);
+            // Assert
+            Assert.AreEqual(expected_tools[1].Name, actual_tools[0].Name);
+            Assert.AreEqual(expected_tools[2].Name, actual_tools[1].Name);
+            Assert.AreEqual(expected_tools[3].Name, actual_tools[2].Name);
+            Assert.AreEqual(expected_tools[4].Name, actual_tools[3].Name);
+            Assert.AreEqual(expected_tools[0].Name, actual_tools[4].Name);
+            Assert.AreEqual("Cordless Drill", actual_tools[0].Name); // Just to check ourselves
+            Assert.AreEqual(5, actual_tools.Count); // Just to check ourselves
         }
     }
 }
