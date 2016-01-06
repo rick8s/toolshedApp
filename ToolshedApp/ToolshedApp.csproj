@@ -177,6 +177,8 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Tool.cs" />
+    <Compile Include="Models\ToolshedContext.cs" />
+    <Compile Include="Models\ToolRepository.cs" />
     <Compile Include="Models\ToolshedUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
