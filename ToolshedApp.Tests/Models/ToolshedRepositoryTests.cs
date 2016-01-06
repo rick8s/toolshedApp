@@ -14,7 +14,7 @@ namespace ToolshedApp.Tests.Models
         private Mock<ToolshedContext> mock_context;
         private Mock<DbSet<ToolshedUser>> mock_set;
         private Mock<DbSet<Tool>> mock_tool_set;
-        private Mock<DbSet<ToolReserve>> mock_reserved_tool_set;
+      
 
         private ToolshedRepository repository;
 
@@ -44,20 +44,6 @@ namespace ToolshedApp.Tests.Models
             mock_context.Setup(a => a.Tools).Returns(mock_tool_set.Object);
         }
 
-        private void ConnectMocksToDataStore(IEnumerable<ToolReserve> data_store)
-        {
-            var data_source = data_store.AsQueryable<ToolReserve>();
-
-            mock_reserved_tool_set.As<IQueryable<ToolReserve>>().Setup(data => data.Provider).Returns(data_source.Provider);
-            mock_reserved_tool_set.As<IQueryable<ToolReserve>>().Setup(data => data.Expression).Returns(data_source.Expression);
-            mock_reserved_tool_set.As<IQueryable<ToolReserve>>().Setup(data => data.ElementType).Returns(data_source.ElementType);
-            mock_reserved_tool_set.As<IQueryable<ToolReserve>>().Setup(data => data.GetEnumerator()).Returns(data_source.GetEnumerator());
-
-            // This is Stubbing the Tools property getter
-            mock_context.Setup(a => a.Reserved).Returns(mock_reserved_tool_set.Object);
-        }
-
-    
 
         [TestInitialize]
         public void Initialize()
@@ -65,7 +51,7 @@ namespace ToolshedApp.Tests.Models
             mock_context = new Mock<ToolshedContext>();
             mock_set = new Mock<DbSet<ToolshedUser>>();
             mock_tool_set = new Mock<DbSet<Tool>>();
-           // mock_reserved_tool_set = new Mock<DbSet<ToolReserve>>();
+         
             repository = new ToolshedRepository(mock_context.Object);
         }
 
@@ -75,7 +61,7 @@ namespace ToolshedApp.Tests.Models
             mock_context = null;
             mock_set = null;
             mock_tool_set = null;
-           // mock_reserved_tool_set = null;
+        
             repository = null;
         }
 

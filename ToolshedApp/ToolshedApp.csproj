@@ -181,7 +181,6 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Tool.cs" />
-    <Compile Include="Models\ToolReserve.cs" />
     <Compile Include="Models\ToolshedContext.cs" />
     <Compile Include="Models\ToolshedRepository.cs" />
     <Compile Include="Models\ToolshedUser.cs" />
