@@ -4,13 +4,16 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Available Tools:</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -20,12 +23,10 @@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Image)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Available)
-        </th>
+       @* <th>
+        @Html.DisplayNameFor(model => model.Available)
+    </th>
+    *@
         <th></th>
     </tr>
 

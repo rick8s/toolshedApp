@@ -15,6 +15,7 @@ namespace ToolshedApp.Content
         private ToolshedContext db = new ToolshedContext();
 
         // GET: Tools
+        [Authorize]
         public ActionResult Index()
         {
             return View(db.Tools.ToList());
@@ -36,6 +37,7 @@ namespace ToolshedApp.Content
         }
 
         // GET: Tools/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
