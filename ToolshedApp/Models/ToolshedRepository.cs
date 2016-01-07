@@ -78,7 +78,7 @@ namespace ToolshedApp.Models
 
         public bool CreateTool(ToolshedUser toolshed_user1, string name, string category, string descrip, string pic)
         {
-            Tool a_tool = new Tool { Name = name, Owner = toolshed_user1, Category = category, Description = descrip, Image = pic };
+            Tool a_tool = new Tool { Owner = toolshed_user1, Name = name, Category = category, Description = descrip, Image = pic, Available = true };
             bool is_added = true;
             try
             {
@@ -100,6 +100,8 @@ namespace ToolshedApp.Models
             List<Tool> found_available_sorted = found_available.OrderBy(tool => tool.Available).ToList();
             return found_available_sorted;
         }
+
+       
 
         public List<Tool> GetUserTools(ToolshedUser user)
         {
@@ -134,6 +136,23 @@ namespace ToolshedApp.Models
             List<Tool> found_tools = query.Where(tool => tool.Category.Contains(search_term)).ToList();
             found_tools.Sort();
             return found_tools;
+        }
+
+        public bool AddNewUser(ApplicationUser user)
+        {
+            ToolshedUser new_user = new ToolshedUser { RealUser = user};
+            bool is_added = true;
+            try
+            {
+                ToolshedUser added_user = _context.ToolshedUsers.Add(new_user);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                is_added = false;
+            }
+            return is_added;
         }
     }
 }

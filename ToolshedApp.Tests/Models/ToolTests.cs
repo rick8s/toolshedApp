@@ -32,7 +32,7 @@ namespace ToolshedApp.Tests.Models
             // Assert
             Assert.AreEqual(1, a_tool.ToolId);
             Assert.AreEqual("My Content", a_tool.Description);
-            Assert.AreEqual(null, a_tool.Owner);
+            Assert.AreEqual(1, a_tool.Owner);
             Assert.AreEqual("https://google.com", a_tool.Image);
             Assert.AreEqual("A Category", a_tool.Category);
             Assert.AreEqual(true, a_tool.Available);

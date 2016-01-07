@@ -23,6 +23,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
+        
        @* <th>
         @Html.DisplayNameFor(model => model.Available)
     </th>
@@ -33,6 +34,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            <img src="@item.Image" />
+           
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
@@ -41,15 +46,14 @@
         <td>
             @Html.DisplayFor(modelItem => item.Description)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Image)
+        
+     <td>
+        @Html.DisplayFor(modelItem => item.Available)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Available)
-        </td>
+       
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ToolId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ToolId }) |
+            @Html.ActionLink("Borrow", "Borrow", new { id=item.ToolId }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ToolId })
         </td>
     </tr>

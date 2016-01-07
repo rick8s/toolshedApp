@@ -7,6 +7,8 @@ namespace ToolshedApp.Models
 {
     public class ToolshedUser : IComparable
     {
+        public virtual ApplicationUser RealUser { get; set; }
+
         [Required]
         public string FirstName { get; set; }
         [Required]

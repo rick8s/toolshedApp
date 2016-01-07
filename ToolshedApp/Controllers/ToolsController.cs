@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -8,32 +9,59 @@ using System.Web;
 using System.Web.Mvc;
 using ToolshedApp.Models;
 
+
+
 namespace ToolshedApp.Content
 {
     public class ToolsController : Controller
     {
         private ToolshedContext db = new ToolshedContext();
+        public ToolshedRepository Repo { get; set; }
+
+        public ToolsController() : base()
+        {
+            Repo = new ToolshedRepository();
+        }
 
         // GET: Tools
         [Authorize]
         public ActionResult Index()
         {
-            return View(db.Tools.ToList());
+
+            string user_id = User.Identity.GetUserId();
+            ApplicationUser real_user = Repo.Context.Users.FirstOrDefault(u => u.Id == user_id);
+            ToolshedUser me = null;
+            try
+            {
+                me = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).Single();
+
+            }
+            catch (Exception)
+            {
+                bool successful = Repo.AddNewUser(real_user);
+            }
+
+
+
+            List<Tool> my_tools = Repo.GetAvailableTools();
+            return View(my_tools);
         }
 
         // GET: Tools/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Borrow(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tool tool = db.Tools.Find(id);
+            Tool tool = Repo.Context.Tools.Find(id);
             if (tool == null)
             {
                 return HttpNotFound();
             }
-            return View(tool);
+            tool.Available = false;
+            Repo.Context.SaveChanges();
+            return View("Index");
         }
 
         // GET: Tools/Create
@@ -48,16 +76,20 @@ namespace ToolshedApp.Content
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ToolId,Name,Category,Description,Image,Available")] Tool tool)
+        public ActionResult Create([Bind(Include = "ToolId,Name,Category,Description,Image")] Tool tool)
+        
         {
+            string user_id = User.Identity.GetUserId();
+            ApplicationUser real_user = Repo.Context.Users.FirstOrDefault(u => u.Id == user_id);
+            ToolshedUser me = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).SingleOrDefault();
+
             if (ModelState.IsValid)
             {
-                db.Tools.Add(tool);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Repo.CreateTool(me, tool.Name, tool.Category,tool.Description, tool.Image);
+                
             }
 
-            return View(tool);
+            return RedirectToAction("Index");
         }
 
         // GET: Tools/Edit/5
@@ -67,7 +99,7 @@ namespace ToolshedApp.Content
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tool tool = db.Tools.Find(id);
+            Tool tool = Repo.Context.Tools.Find(id);
             if (tool == null)
             {
                 return HttpNotFound();
@@ -84,8 +116,8 @@ namespace ToolshedApp.Content
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tool).State = EntityState.Modified;
-                db.SaveChanges();
+                Repo.Context.Entry(tool).State = EntityState.Modified;
+                Repo.Context.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(tool);
@@ -98,7 +130,7 @@ namespace ToolshedApp.Content
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tool tool = db.Tools.Find(id);
+            Tool tool = Repo.Context.Tools.Find(id);
             if (tool == null)
             {
                 return HttpNotFound();
@@ -111,9 +143,9 @@ namespace ToolshedApp.Content
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Tool tool = db.Tools.Find(id);
-            db.Tools.Remove(tool);
-            db.SaveChanges();
+            Tool tool = Repo.Context.Tools.Find(id);
+            Repo.Context.Tools.Remove(tool);
+            Repo.Context.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -121,7 +153,7 @@ namespace ToolshedApp.Content
         {
             if (disposing)
             {
-                db.Dispose();
+                Repo.Context.Dispose();
             }
             base.Dispose(disposing);
         }
