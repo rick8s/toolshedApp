@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -8,143 +7,123 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ToolshedApp.Models;
+using Microsoft.AspNet.Identity;
 
 
-
-namespace ToolshedApp.Content
+namespace ToolshedApp.Controllers
 {
-    public class ToolsController : Controller
+    public class ToolshedUsersController : Controller
     {
         private ToolshedContext db = new ToolshedContext();
+
         public ToolshedRepository Repo { get; set; }
 
-        public ToolsController() : base()
+        public ToolshedUsersController() : base()
         {
             Repo = new ToolshedRepository();
         }
 
-        // GET: Tools
-        [Authorize]
+        // GET: ToolshedUsers
         public ActionResult Index()
         {
-
-            string user_id = User.Identity.GetUserId();
-            ApplicationUser real_user = Repo.Context.Users.FirstOrDefault(u => u.Id == user_id);
-            ToolshedUser me = null;
-            try
-            {
-                me = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).Single();
-
-            }
-            catch (Exception)
-            {
-                bool successful = Repo.AddNewUser(real_user);
-            }
-
-
-
-            List<Tool> my_tools = Repo.GetAvailableTools();
-            return View(my_tools);
+            return View(db.ToolshedUsers.ToList());
         }
 
-        // GET: Tools/Details/5
-        public ActionResult Borrow(int? id)
+        // GET: ToolshedUsers/Details/5
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tool tool = Repo.Context.Tools.Find(id);
-            if (tool == null)
+            ToolshedUser toolshedUser = db.ToolshedUsers.Find(id);
+            if (toolshedUser == null)
             {
                 return HttpNotFound();
             }
-            tool.Available = false;
-            Repo.Context.SaveChanges();
-            return View("Index");
+            return View(toolshedUser);
         }
 
-        // GET: Tools/Create
-        [Authorize]
+        // GET: ToolshedUsers/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Tools/Create
+        // POST: ToolshedUsers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Owner,ToolId,Name,Category,Description,Image")] Tool tool)
-        
+        public ActionResult Create([Bind(Include = "UserId,FirstName,LastName,UserName,Phone,Street")] ToolshedUser toolshedUser)
         {
             string user_id = User.Identity.GetUserId();
             ApplicationUser real_user = Repo.Context.Users.FirstOrDefault(u => u.Id == user_id);
-            ToolshedUser me = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).SingleOrDefault();
+
 
             if (ModelState.IsValid)
             {
-                Repo.CreateTool(me, tool.Name, tool.Category,tool.Description, tool.Image);                
+                Repo.CreateToolshedUser(real_user, toolshedUser.FirstName, toolshedUser.LastName, toolshedUser.UserName, toolshedUser.Phone, toolshedUser.Street);
+                return RedirectToAction("Index", "Tools");
             }
-        
-            return RedirectToAction("Index");
+
+            return RedirectToAction("Create", "ToolshedUsers" );
         }
 
-        // GET: Tools/Edit/5
+        // GET: ToolshedUsers/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tool tool = Repo.Context.Tools.Find(id);
-            if (tool == null)
+            ToolshedUser toolshedUser = db.ToolshedUsers.Find(id);
+            if (toolshedUser == null)
             {
                 return HttpNotFound();
             }
-            return View(tool);
+            return View(toolshedUser);
         }
 
-        // POST: Tools/Edit/5
+        // POST: ToolshedUsers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ToolId,Name,Category,Description,Image,Available")] Tool tool)
+        public ActionResult Edit([Bind(Include = "UserId,FirstName,LastName,UserName,Phone,Street")] ToolshedUser toolshedUser)
         {
             if (ModelState.IsValid)
             {
-                Repo.Context.Entry(tool).State = EntityState.Modified;
-                Repo.Context.SaveChanges();
+                db.Entry(toolshedUser).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(tool);
+            return View(toolshedUser);
         }
 
-        // GET: Tools/Delete/5
+        // GET: ToolshedUsers/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tool tool = Repo.Context.Tools.Find(id);
-            if (tool == null)
+            ToolshedUser toolshedUser = db.ToolshedUsers.Find(id);
+            if (toolshedUser == null)
             {
                 return HttpNotFound();
             }
-            return View(tool);
+            return View(toolshedUser);
         }
 
-        // POST: Tools/Delete/5
+        // POST: ToolshedUsers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Tool tool = Repo.Context.Tools.Find(id);
-            Repo.Context.Tools.Remove(tool);
-            Repo.Context.SaveChanges();
+            ToolshedUser toolshedUser = db.ToolshedUsers.Find(id);
+            db.ToolshedUsers.Remove(toolshedUser);
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -152,7 +131,7 @@ namespace ToolshedApp.Content
         {
             if (disposing)
             {
-                Repo.Context.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }

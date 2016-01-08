@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 
 
+
 namespace ToolshedApp.Models
 {
     public class ToolshedRepository
@@ -76,9 +77,10 @@ namespace ToolshedApp.Models
             return found_tools;
         }
 
-        public bool CreateTool(ToolshedUser toolshed_user1, string name, string category, string descrip, string pic)
+        public bool CreateTool(ToolshedUser me, string name, string category, string descrip, string pic)
         {
-            Tool a_tool = new Tool { Owner = toolshed_user1, Name = name, Category = category, Description = descrip, Image = pic, Available = true };
+
+            Tool a_tool = new Tool { Owner = me, Name = name, Category = category, Description = descrip, Image = pic, Available = true };
             bool is_added = true;
             try
             {
@@ -90,6 +92,28 @@ namespace ToolshedApp.Models
                 is_added = false;
             }
             return is_added;
+        }
+
+        public bool CreateToolshedUser(ApplicationUser app_user, string first, string last, string userName, string phone, string street)
+        {
+           // bool user_name_is_available = this.IsUserNameAvailable(userName);
+           // if (user_name_is_available)
+           // {
+                ToolshedUser a_user = new ToolshedUser { RealUser = app_user, FirstName = first, LastName = last, Phone = phone, Street = street };
+                bool is_added = true;
+                try
+                {
+                    ToolshedUser added_user = _context.ToolshedUsers.Add(a_user);
+                    _context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    is_added = false;
+                }
+
+                return is_added;
+           // }
+         
         }
 
         public List<Tool> GetAvailableTools()
@@ -111,7 +135,7 @@ namespace ToolshedApp.Models
                 var query = from u in _context.ToolshedUsers where u.UserId == u.UserId select u;
                 ToolshedUser found_user = query.Single<ToolshedUser>();
                 if (found_user == null)
-                {
+                {                
                     return new List<Tool>();
                 }
                 return found_user.Tools;

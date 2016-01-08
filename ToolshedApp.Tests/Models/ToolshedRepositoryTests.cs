@@ -335,7 +335,7 @@ namespace ToolshedApp.Tests.Models
             // Should this return true?
             Assert.IsTrue(successful);
         }
-
+        
        
         [TestMethod]
         public void ToolshedRepositoryEnsureBorrowedToolIsUnavailable()

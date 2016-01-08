@@ -25,12 +25,13 @@ namespace ToolshedApp.Models
         public int UserId { get; set; }
 
         public List<Tool> Tools { get; set; }
-
+       
         public int CompareTo(object obj)
         {
             ToolshedUser other_user = obj as ToolshedUser;
             int answer = this.UserName.CompareTo(other_user.UserName);
             return answer;
         }
+
     }
 }

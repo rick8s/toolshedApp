@@ -31,6 +31,5 @@ namespace ToolshedApp.Models
             int answer = this.Name.CompareTo(other_tools.Name);
             return answer;
         }
-
     }
 }
