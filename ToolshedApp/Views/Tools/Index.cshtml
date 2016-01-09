@@ -23,38 +23,45 @@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Borrowed)
+        </th>
         
-       @* <th>
-        @Html.DisplayNameFor(model => model.Available)
-    </th>
-    *@
+               @* <th>
+            @Html.DisplayNameFor(model => model.Available)
+        </th>
+                <td>
+            @Html.DisplayFor(modelItem => item.Available)
+            </td>
+            *@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var tool in Model) {
     <tr>
         <td>
-            <img src="@item.Image" />
+            <img src="@tool.Image" />
            
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.DisplayFor(modelItem => tool.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Category)
+            @Html.DisplayFor(modelItem => tool.Category)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Description)
+            @Html.DisplayFor(modelItem => tool.Description)
         </td>
-        
-     <td>
-        @Html.DisplayFor(modelItem => item.Available)
+        <td>
+            @Html.DisplayFor(modelItem => tool.Borrowed)
         </td>
+    
        
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ToolId }) |
-            @Html.ActionLink("Borrow", "Borrow", new { id=item.ToolId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ToolId })
+            @Html.ActionLink("Edit", "Edit", new { id=tool.ToolId }) |
+            @Html.ActionLink("Borrow", "Borrow", new { id=tool.ToolId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=tool.ToolId })
         </td>
     </tr>
 }

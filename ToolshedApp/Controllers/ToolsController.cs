@@ -43,7 +43,7 @@ namespace ToolshedApp.Content
 
 
 
-            List<Tool> my_tools = Repo.GetAvailableTools();
+            List<Tool> my_tools = Repo.GetUserTools(me);
             return View(my_tools);
         }
 
@@ -88,7 +88,7 @@ namespace ToolshedApp.Content
                 Repo.CreateTool(me, tool.Name, tool.Category,tool.Description, tool.Image);                
             }
         
-            return RedirectToAction("Index");
+            return RedirectToAction("_MyTools");
         }
 
         // GET: Tools/Edit/5

@@ -132,13 +132,23 @@ namespace ToolshedApp.Models
 
             if (user != null)
             {
-                var query = from u in _context.ToolshedUsers where u.UserId == u.UserId select u;
+                var query = from u in _context.ToolshedUsers where u.UserId == user.UserId select u;
+                var tool_query = from t in _context.Tools where t.Owner.UserId == user.UserId select t;
                 ToolshedUser found_user = query.Single<ToolshedUser>();
+                List<Tool> this_users_tools = tool_query.ToList();
                 if (found_user == null)
                 {                
                     return new List<Tool>();
                 }
-                return found_user.Tools;
+                if (tool_query == null)
+                {
+                    return new List<Tool>();
+                }
+                else
+                {
+                    return this_users_tools;
+                }
+               
             }
             else
             {
