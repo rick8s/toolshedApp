@@ -10,7 +10,6 @@ namespace ToolshedApp.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "ToolshedApp.Models.ToolshedContext";
         }
 
         protected override void Seed(ToolshedApp.Models.ToolshedContext context)

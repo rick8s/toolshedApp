@@ -13,7 +13,7 @@ namespace ToolshedApp.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201601081826247_InitialCreate"; }
+            get { return "201601090009073_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

@@ -40,6 +40,7 @@ namespace ToolshedApp.Migrations
                         Description = c.String(),
                         Image = c.String(),
                         Available = c.Boolean(nullable: false),
+                        Borrowed = c.Boolean(nullable: false),
                         ToolshedUser_UserId = c.Int(),
                         Borrower_UserId = c.Int(),
                         Owner_UserId = c.Int(),

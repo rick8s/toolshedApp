@@ -23,6 +23,7 @@ namespace ToolshedApp.Models
         public int ToolId { get; set; }
 
         public bool Available { get; set; }
+        public bool Borrowed { get; set; }
         
 
         public int CompareTo(object obj)

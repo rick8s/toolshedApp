@@ -99,7 +99,7 @@ namespace ToolshedApp.Models
            // bool user_name_is_available = this.IsUserNameAvailable(userName);
            // if (user_name_is_available)
            // {
-                ToolshedUser a_user = new ToolshedUser { RealUser = app_user, FirstName = first, LastName = last, Phone = phone, Street = street };
+                ToolshedUser a_user = new ToolshedUser { RealUser = app_user, FirstName = first, LastName = last, UserName = userName, Phone = phone, Street = street };
                 bool is_added = true;
                 try
                 {

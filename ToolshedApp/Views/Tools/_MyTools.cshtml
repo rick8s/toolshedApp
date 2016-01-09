@@ -1,0 +1,77 @@
+﻿@model IEnumerable<ToolshedApp.Models.Tool>
+
+@{
+    ViewBag.Title = "My Tools";
+}
+
+<h2>My Tools:</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Available)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Borrowed)
+        </th>
+
+       
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="@item.Image" />
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Available)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Borrowed)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Borrower)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ToolId }) |
+                @Html.ActionLink("Borrow", "Borrow", new { id = item.ToolId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ToolId })
+            </td>
+        </tr>
+    }
+
+</table>
+
