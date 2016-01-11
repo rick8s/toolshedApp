@@ -353,7 +353,7 @@ namespace ToolshedApp.Tests.Models
             ConnectMocksToDataStore(list_of_tools);
 
             //Act
-            List<Tool> available_tools = repository.GetAvailableTools();
+            List<Tool> available_tools = repository.GetOthersAvailableTools();
 
             //Assert
 

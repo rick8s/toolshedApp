@@ -64,7 +64,7 @@ namespace ToolshedApp.Controllers
             if (ModelState.IsValid)
             {
                 Repo.CreateToolshedUser(real_user, toolshedUser.FirstName, toolshedUser.LastName, toolshedUser.UserName, toolshedUser.Phone, toolshedUser.Street);
-                return RedirectToAction("Index", "Tools");
+                return RedirectToAction("_MyTools", "Tools");
             }
 
             return RedirectToAction("Create", "ToolshedUsers" );

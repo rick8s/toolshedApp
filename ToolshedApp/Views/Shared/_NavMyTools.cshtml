@@ -13,11 +13,11 @@
                 @*@if (Request.IsAuthenticated)
                     {*@
                 <li>@Html.ActionLink("Toolshed", "Index", "Tools")</li>
-                <li>@Html.ActionLink("My Tools", "MyTools", "Tools")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                <li>@Html.ActionLink("My Borrowed", "MyBorrowed", "Tools")</li>
+                <li>@Html.ActionLink("My Loaned", "MyLoaned", "Tools")</li>
             </ul>
 
-            @Html.Partial("_LoginPartial")
+            @*@Html.Partial("_LoginPartial")*@
         </div>
     </div>
 </div>

@@ -43,11 +43,35 @@ namespace ToolshedApp.Content
 
 
 
+            List<Tool> my_tools = Repo.GetOthersAvailableTools(me);
+            return View(my_tools);
+        }
+
+        // GET: MY Tools
+        [Authorize]
+        public ActionResult MyTools()
+        {
+
+            string user_id = User.Identity.GetUserId();
+            ApplicationUser real_user = Repo.Context.Users.FirstOrDefault(u => u.Id == user_id);
+            ToolshedUser me = null;
+            try
+            {
+                me = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).Single();
+
+            }
+            catch (Exception)
+            {
+                bool successful = Repo.AddNewUser(real_user);
+            }
+
+
+
             List<Tool> my_tools = Repo.GetUserTools(me);
             return View(my_tools);
         }
 
-        // GET: Tools/Details/5
+        // GET: Tools/Borrow
         public ActionResult Borrow(int? id)
         {
             if (id == null)
@@ -60,9 +84,29 @@ namespace ToolshedApp.Content
                 return HttpNotFound();
             }
             tool.Available = false;
+            tool.Borrowed = true;
             Repo.Context.SaveChanges();
-            return View("Index");
+            return RedirectToAction("Index");
         }
+
+        // GET: Tools/Return
+        public ActionResult Return(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Tool tool = Repo.Context.Tools.Find(id);
+            if (tool == null)
+            {
+                return HttpNotFound();
+            }
+            tool.Available = true;
+            tool.Borrowed = false;
+            Repo.Context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
 
         // GET: Tools/Create
         [Authorize]
@@ -88,7 +132,7 @@ namespace ToolshedApp.Content
                 Repo.CreateTool(me, tool.Name, tool.Category,tool.Description, tool.Image);                
             }
         
-            return RedirectToAction("_MyTools");
+            return RedirectToAction("Index");
         }
 
         // GET: Tools/Edit/5

@@ -125,7 +125,59 @@ namespace ToolshedApp.Models
             return found_available_sorted;
         }
 
-       
+        public List<Tool> GetOthersAvailableTools(ToolshedUser user)
+        {
+
+            if (user != null)
+            {
+                var query = from u in _context.ToolshedUsers where u.UserId == user.UserId select u;
+                var tool_query = from t in _context.Tools where t.Available == true && t.Owner.UserId != user.UserId select t;
+                ToolshedUser found_users = query.Single<ToolshedUser>();
+                List<Tool> these_users_tools = tool_query.ToList();
+                if (found_users == null)
+                {
+                    return new List<Tool>();
+                }
+                if (tool_query == null)
+                {
+                    return new List<Tool>();
+                }
+                else
+                {
+                    List<Tool> found_available_sorted = these_users_tools.OrderBy(tool => tool.Owner).ToList();
+                    return found_available_sorted;
+                }
+
+            }
+            else
+            {
+                return new List<Tool>();
+            }
+
+
+
+
+            //var query = from tool in _context.Tools select tool;
+            //var tool_query = from t in _context.Tools where t.Owner.UserId != user.UserId select t;
+           // List<Tool> found_available = query.Where(tool => tool.Available == true).ToList();
+
+           // List<Tool> found_available_sorted = found_available.OrderBy(tool => tool.Available).ToList();
+            //return found_available_sorted;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public List<Tool> GetUserTools(ToolshedUser user)
         {
