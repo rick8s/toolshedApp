@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using ToolshedApp.Models;
 using Microsoft.AspNet.Identity;
+using System.Text.RegularExpressions;
 
 
 
@@ -25,7 +26,7 @@ namespace ToolshedApp.Content
 
         // GET: Tools
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Index(string search_string)
         {
 
             string user_id = User.Identity.GetUserId();
@@ -39,12 +40,25 @@ namespace ToolshedApp.Content
             catch (Exception)
             {
                 bool successful = Repo.AddNewUser(real_user);
+                if(successful)
+                {
+                    me = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).Single();
+                }
             }
 
-
-
-            List<Tool> my_tools = Repo.GetOthersAvailableTools(me);
-            return View(my_tools);
+            List<Tool> others_tools = Repo.GetOthersAvailableTools(me);
+            var search_tools = from t in others_tools where t.Owner.UserId != me.UserId select t;
+            
+            if(!String.IsNullOrEmpty(search_string))
+            {
+                search_tools = search_tools.Where(t => Regex.IsMatch(t.Name, search_string, RegexOptions.IgnoreCase) || Regex.IsMatch(t.Owner.FirstName, search_string, RegexOptions.IgnoreCase) || t.Description.Contains(search_string) || Regex.IsMatch(t.Category, search_string, RegexOptions.IgnoreCase));
+                
+                return View(search_tools);               
+            }
+            else
+            {
+                return View(others_tools);
+            }
         }
 
         // GET: MY Tools
@@ -65,16 +79,98 @@ namespace ToolshedApp.Content
                 bool successful = Repo.AddNewUser(real_user);
             }
 
-
-
             List<Tool> my_tools = Repo.GetUserTools(me);
             return View(my_tools);
+        }
+
+        // GET: Tools I borrowed
+        [Authorize]
+        public ActionResult MyBorrowed()
+        {
+
+            string user_id = User.Identity.GetUserId();
+            ApplicationUser real_user = Repo.Context.Users.FirstOrDefault(u => u.Id == user_id);
+            ToolshedUser me = null;
+            try
+            {
+                me = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).Single();
+
+            }
+            catch (Exception)
+            {
+                bool successful = Repo.AddNewUser(real_user);
+            }
+
+            List<Tool> my_tools = Repo.GetListOfToolsThisUserBorrowed(me);
+            return View(my_tools);
+        }
+
+        // GET: Tools I loaned
+        [Authorize]
+        public ActionResult MyLoaned()
+        {
+
+            string user_id = User.Identity.GetUserId();
+            ApplicationUser real_user = Repo.Context.Users.FirstOrDefault(u => u.Id == user_id);
+            ToolshedUser me = null;
+            try
+            {
+                me = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).Single();
+
+            }
+            catch (Exception)
+            {
+                bool successful = Repo.AddNewUser(real_user);
+            }
+
+            List<Tool> my_tools = Repo.GetListOfToolsThisUserLoaned(me);
+            return View(my_tools);
+        }
+
+
+        // GET: All Borrowed Tools
+        [Authorize]
+        public ActionResult AllLoaned()
+        {
+
+            string user_id = User.Identity.GetUserId();
+            ApplicationUser real_user = Repo.Context.Users.FirstOrDefault(u => u.Id == user_id);
+            ToolshedUser me = null;
+            try
+            {
+                me = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).Single();
+
+            }
+            catch (Exception)
+            {
+                bool successful = Repo.AddNewUser(real_user);
+            }
+
+            List<Tool> all_borrowed_tools = Repo.GetAllBorrowedTools();
+            return View(all_borrowed_tools);
         }
 
         // GET: Tools/Borrow
         public ActionResult Borrow(int? id)
         {
-            if (id == null)
+            string user_id = User.Identity.GetUserId();
+            ApplicationUser real_user = Repo.Context.Users.FirstOrDefault(u => u.Id == user_id);
+            ToolshedUser me = null;
+            try
+            {
+                me = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).Single();
+
+            }
+            catch (Exception)
+            {
+                bool successful = Repo.AddNewUser(real_user);
+                if (successful)
+                {
+                    me = Repo.GetAllUsers().Where(u => u.RealUser.Id == user_id).Single();
+                }
+            }
+
+                if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -85,6 +181,7 @@ namespace ToolshedApp.Content
             }
             tool.Available = false;
             tool.Borrowed = true;
+            tool.Borrower = me;
             Repo.Context.SaveChanges();
             return RedirectToAction("Index");
         }

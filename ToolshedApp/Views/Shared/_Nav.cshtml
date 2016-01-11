@@ -14,7 +14,9 @@
                     {*@
                 <li>@Html.ActionLink("Toolshed", "Index", "Tools")</li>
                 <li>@Html.ActionLink("My Tools", "MyTools", "Tools")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                <li>@Html.ActionLink("Borrowing", "MyBorrowed", "Tools")</li>
+                <li>@Html.ActionLink("Loaning", "MyLoaned", "Tools")</li>
+                <li>@Html.ActionLink("All Loaned", "AllLoaned", "Tools")</li>
             </ul>
 
             @Html.Partial("_LoginPartial")

@@ -125,6 +125,15 @@ namespace ToolshedApp.Models
             return found_available_sorted;
         }
 
+        public List<Tool> GetAllBorrowedTools()
+        {
+            var query = from tool in _context.Tools select tool;
+            List<Tool> found_borrowed = query.Where(tool => tool.Available == false).ToList();
+
+            List<Tool> found_borrowed_sorted = found_borrowed.OrderBy(tool => tool.Owner.FirstName).ToList();
+            return found_borrowed_sorted;
+        }
+
         public List<Tool> GetOthersAvailableTools(ToolshedUser user)
         {
 
@@ -147,37 +156,12 @@ namespace ToolshedApp.Models
                     List<Tool> found_available_sorted = these_users_tools.OrderBy(tool => tool.Owner).ToList();
                     return found_available_sorted;
                 }
-
             }
             else
             {
                 return new List<Tool>();
             }
-
-
-
-
-            //var query = from tool in _context.Tools select tool;
-            //var tool_query = from t in _context.Tools where t.Owner.UserId != user.UserId select t;
-           // List<Tool> found_available = query.Where(tool => tool.Available == true).ToList();
-
-           // List<Tool> found_available_sorted = found_available.OrderBy(tool => tool.Available).ToList();
-            //return found_available_sorted;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         public List<Tool> GetUserTools(ToolshedUser user)
         {
@@ -239,6 +223,67 @@ namespace ToolshedApp.Models
                 is_added = false;
             }
             return is_added;
+        }
+
+
+        public List<Tool> GetListOfToolsThisUserBorrowed(ToolshedUser user)
+        {
+
+            if (user != null)
+            {
+                var query = from u in _context.ToolshedUsers where u.UserId == user.UserId select u;
+                var tool_query = from t in _context.Tools where t.Borrowed == true && t.Borrower.UserId == user.UserId select t;
+                ToolshedUser found_users = query.Single<ToolshedUser>();
+                List<Tool> these_users_tools = tool_query.ToList();
+                if (found_users == null)
+                {
+                    return new List<Tool>();
+                }
+                if (tool_query == null)
+                {
+                    return new List<Tool>();
+                }
+                else
+                {
+                    List<Tool> found_available_sorted = these_users_tools.OrderBy(tool => tool.Owner).ToList();
+                    return found_available_sorted;
+                }
+
+            }
+            else
+            {
+                return new List<Tool>();
+            }
+        }
+
+        public List<Tool> GetListOfToolsThisUserLoaned(ToolshedUser user)
+        {
+
+            if (user != null)
+            {
+                var query = from u in _context.ToolshedUsers where u.UserId == user.UserId select u;
+                var tool_query = from t in _context.Tools where t.Borrowed == true && t.Borrower.UserId != user.UserId && t.Owner.UserId == user.UserId select t;
+                ToolshedUser found_users = query.Single<ToolshedUser>();
+                List<Tool> these_users_tools = tool_query.ToList();
+                if (found_users == null)
+                {
+                    return new List<Tool>();
+                }
+                if (tool_query == null)
+                {
+                    return new List<Tool>();
+                }
+                else
+                {
+                    List<Tool> found_available_sorted = these_users_tools.OrderBy(tool => tool.Owner).ToList();
+                    return found_available_sorted;
+                }
+
+            }
+            else
+            {
+                return new List<Tool>();
+            }
         }
     }
 }

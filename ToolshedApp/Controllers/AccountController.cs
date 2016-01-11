@@ -449,7 +449,7 @@ namespace ToolshedApp.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Tools");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

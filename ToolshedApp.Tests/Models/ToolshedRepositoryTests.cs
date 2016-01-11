@@ -337,30 +337,30 @@ namespace ToolshedApp.Tests.Models
         }
         
        
-        [TestMethod]
-        public void ToolshedRepositoryEnsureBorrowedToolIsUnavailable()
-        {
-            //Arrange
+        //[TestMethod]
+        //public void ToolshedRepositoryEnsureBorrowedToolIsUnavailable()
+        //{
+        //    //Arrange
 
-            List<Tool> list_of_tools = new List<Tool>
-            {
-                new Tool { ToolId = 1, Name = "cordless drill", Available = true },
-                new Tool { ToolId = 2, Name = "table saw", Available = true },
-                new Tool { ToolId = 3, Name = "band saw", Available = false },
-                new Tool { ToolId = 4, Name = "compressor", Available = true }
-            };
+        //    List<Tool> list_of_tools = new List<Tool>
+        //    {
+        //        new Tool { ToolId = 1, Name = "cordless drill", Available = true },
+        //        new Tool { ToolId = 2, Name = "table saw", Available = true },
+        //        new Tool { ToolId = 3, Name = "band saw", Available = false },
+        //        new Tool { ToolId = 4, Name = "compressor", Available = true }
+        //    };
 
-            ConnectMocksToDataStore(list_of_tools);
+        //    ConnectMocksToDataStore(list_of_tools);
 
-            //Act
-            List<Tool> available_tools = repository.GetOthersAvailableTools();
+        //    //Act
+        //    List<Tool> available_tools = repository.GetOthersAvailableTools();
 
-            //Assert
+        //    //Assert
 
-            Assert.AreEqual(list_of_tools[0].ToolId, available_tools[0].ToolId);
-            Assert.AreEqual(list_of_tools[1].ToolId, available_tools[1].ToolId);
-            Assert.AreEqual(list_of_tools[3].ToolId, available_tools[2].ToolId);
-        }
+        //    Assert.AreEqual(list_of_tools[0].ToolId, available_tools[0].ToolId);
+        //    Assert.AreEqual(list_of_tools[1].ToolId, available_tools[1].ToolId);
+        //    Assert.AreEqual(list_of_tools[3].ToolId, available_tools[2].ToolId);
+        //}
 
         [TestMethod]
         public void ToolshedRepositoryEnsureICanSearchByToolName()

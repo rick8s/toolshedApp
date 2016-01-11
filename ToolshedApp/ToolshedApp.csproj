@@ -263,6 +263,9 @@
     <Content Include="Views\ToolshedUsers\Index.cshtml" />
     <Content Include="Views\Shared\_NavMyTools.cshtml" />
     <Content Include="Views\Tools\MyTools.cshtml" />
+    <Content Include="Views\Tools\MyBorrowed.cshtml" />
+    <Content Include="Views\Tools\MyLoaned.cshtml" />
+    <Content Include="Views\Tools\AllLoaned.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,82 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<ToolshedApp.Models.Tool>
+
+@{
+    ViewBag.Title = "AllBorrowedTools";
+}
+
+<h2>All Loaned Tools:</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Borrowed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Owner)
+        </th>
+
+        @* <th>
+                @Html.DisplayNameFor(model => model.Available)
+            </th>
+                    <td>
+                @Html.DisplayFor(modelItem => item.Available)
+                </td>
+        *@
+        <th></th>
+    </tr>
+
+    @foreach (var tool in Model)
+    {
+        <tr>
+            <td>
+                <img src="@tool.Image" />
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => tool.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => tool.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => tool.Description)
+            </td>
+            <td>
+                @Html.Raw((tool.Borrowed) ? "Yes" : "No")
+                @*@Html.DisplayFor(modelItem => tool.Borrowed)*@
+            </td>
+            <th>
+                @Html.DisplayFor(modelItem => tool.Owner.FirstName)
+            </th>
+
+
+            <td>
+                @*@Html.ActionLink("Return", "Return", new { id = tool.ToolId }) |
+                    @Html.ActionLink("Edit", "Edit", new { id = tool.ToolId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = tool.ToolId })*@
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+
