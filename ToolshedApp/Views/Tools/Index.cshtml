@@ -7,7 +7,7 @@
 <h2>Available Tools:</h2>
 
 <p>
-    @Html.ActionLink("Add New Item", "Create")
+    @Html.ActionLink("Add New Tool", "Create")
     @using (Html.BeginForm("Index", "Tools", FormMethod.Get))
     {
     <p>
@@ -80,9 +80,9 @@
 
 
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = tool.ToolId }) |
-                    @Html.ActionLink("Borrow", "Borrow", new { id = tool.ToolId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = tool.ToolId })
+                   
+                    @Html.ActionLink("Borrow", "Borrow", new { id = tool.ToolId }) 
+                  
                 </td>
             </tr>
         }

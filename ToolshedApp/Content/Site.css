@@ -1,7 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: mintcream /*rgba(255,236,215,.55)*/;
+    background-color: rgb(204,255,255);
     color: black;
 }
 
@@ -26,11 +26,11 @@ textarea {
 }
 
 .nav-div {
-    background-color: burlywood;
+    background-color: rgb(051,102,255);
 }
 
 .navbar-inverse {
-    background-color: moccasin;
+    background-color: darkblue;
 }
 
 .navbar-inverse a {
@@ -42,7 +42,9 @@ textarea {
     color: #000000;
 }
 
+
 .navbar-brand {
     font-size: 24px;
-    color: blue;
+    color: black;
 }
+

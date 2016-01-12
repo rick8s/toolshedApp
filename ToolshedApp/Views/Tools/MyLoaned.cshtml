@@ -8,10 +8,10 @@
     ViewBag.Title = "LoanedTools";
 }
 
-<h2>Loaned Tools:</h2>
+<h2>Tools I am Loaning:</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+   
 </p>
 <table class="table">
     <tr>
@@ -72,7 +72,6 @@
 
             <td>
                 @Html.ActionLink("Return", "Return", new { id = tool.ToolId }) |
-                @Html.ActionLink("Edit", "Edit", new { id = tool.ToolId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = tool.ToolId })
             </td>
         </tr>
