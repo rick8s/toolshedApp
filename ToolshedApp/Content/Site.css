@@ -1,8 +1,8 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: rgba(255,236,215,.55);
-    color: firebrick;
+    background-color: mintcream /*rgba(255,236,215,.55)*/;
+    color: black;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -26,11 +26,11 @@ textarea {
 }
 
 .nav-div {
-    background-color: #af3a11;
+    background-color: burlywood;
 }
 
 .navbar-inverse {
-    background-color: #af3a11;
+    background-color: moccasin;
 }
 
 .navbar-inverse a {
